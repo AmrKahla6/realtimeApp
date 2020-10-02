@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Model\Category;
 use Illuminate\Http\Request;
+use App\Http\Resources\CategoryResource;
 use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
@@ -16,7 +17,7 @@ class CategoryController extends Controller
     public function index()
     {
 
-        $category = Category::latest()->get();
+        $category = CategoryResource::collection(Category::latest()->get());
 
         return response($category , Response::HTTP_ACCEPTED);
 
@@ -40,16 +41,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        // $category = Category::create($request->all());
+        $category = Category::create($request->all());
 
-        $category = new Category;
+        // $category = new Category;
 
-        $category->name = $request->name;
-        $category->slug = str_slug($request->name);
-        $category->save;
+        // $category->name = $request->name;
+        // $category->slug = str_slug($request->name);
+        // $category->save;
 
-        return response($category , Response::HTTP_CREATED);
-    }
+        return response(new CategoryResource($category) , Response::HTTP_CREATED);
+    }//end of function create category
 
     /**
      * Display the specified resource.
@@ -59,8 +60,8 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return response($category , Response::HTTP_ACCEPTED);
-    }
+        return response(new CategoryResource($category) , Response::HTTP_ACCEPTED);
+    }// end of function show one category
 
     /**
      * Show the form for editing the specified resource.
@@ -87,8 +88,8 @@ class CategoryController extends Controller
             'slug' => str_slug($request->name),
         ]);
 
-        return response('Updated' , Response::HTTP_ACCEPTED);
-    }
+        return response(new CategoryResource($category) , Response::HTTP_ACCEPTED);
+    }//end of function Uodate category
 
     /**
      * Remove the specified resource from storage.
@@ -101,5 +102,5 @@ class CategoryController extends Controller
         $category->delete();
 
         return response(null , Response::HTTP_NO_CONTENT);
-    }
-}
+    }// end of function delete category
+}// end of controller

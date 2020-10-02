@@ -30,7 +30,7 @@ class Question extends Model
      * 1 Question have many replies
      */
 
-     public function reply()
+     public function replies()
      {
          return $this->hasMany(Reply::class);
      }// end of Question Reply Relationship
