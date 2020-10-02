@@ -10,6 +10,11 @@ class Question extends Model
     protected $guarded = [];
 
 
+    public function getRouteKeyName()
+    {
+        return 'slug' ;
+    }// end of get route key name
+
     /**
      * Relationshop between Question & User
      * User can Create any question
@@ -39,4 +44,10 @@ class Question extends Model
      {
          return $this->belongsTo(Category::class);
      }// end of Question category Relationship
+
+
+     public function getPathAttribute()
+     {
+         return asset("api/question/$this->slug");
+     }// end of get path atrribute
 }// end of Model
